@@ -1,0 +1,8 @@
+hooks:
+  build:
+    cmd: scripts/setup-workspace.sh
+
+daemons:
+  server:
+    run:
+      cmd: python3 manage.py runserver 0.0.0.0:8080
