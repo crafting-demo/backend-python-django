@@ -116,52 +116,38 @@ def write_entity(store, key, value):
 
 def read_mysql(key):
     conn = db.mysql_client()
-
     stmt = "select content from sample where uuid='" + key + "'"
-
     cursor = conn.cursor()
     cursor.execute(stmt)
-
     if cursor.rowcount == 0:
         value = "Not Found"
     else:
         value = cursor.fetchone()[0]
-
     conn.close()
-
     return {"value": value, "errors": None}
 
 
 def write_mysql(key, value):
     conn = db.mysql_client()
-
     stmt = "insert into sample (uuid, content) values (%s, %s)"
-
     cursor = conn.cursor()
     cursor.execute(stmt, (key, value))
-
     conn.commit()
     conn.close()
-
     return {"value": value, "errors": None}
 
 
 def read_mongodb(key):
     conn = db.mongo_client()
-
     result = conn.sample.find_one({"uuid": key})
-
     if result is None:
         value = "Not Found"
     else:
         value = result["content"]
-
     return {"value": value, "errors": None}
 
 
 def write_mongodb(key, value):
     conn = db.mongo_client()
-
     conn.sample.insert_one({"uuid": key, "content": value})
-
     return {"value": value, "errors": None}
