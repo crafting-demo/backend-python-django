@@ -1,11 +1,14 @@
-import os
 import json
 import requests
 
+from os import environ
 from datetime import datetime
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.serializers.json import DjangoJSONEncoder
+
+from . import db
+from . import logger
 
 
 @csrf_exempt
@@ -57,7 +60,7 @@ def nested_call_handler(request):
 
         response = json.dumps(message, cls=DjangoJSONEncoder)
 
-        log_context(request, response, errors, received_at)
+        logger.log_context(request, response, errors, received_at)
 
         return JsonResponse(message)
 
@@ -78,7 +81,7 @@ def service_call(payload):
 
 
 def service_endpoint(serviceName):
-    suffix = os.environ["SANDBOX_ENDPOINT_DNS_SUFFIX"] + "/api"
+    suffix = environ.get("SANDBOX_ENDPOINT_DNS_SUFFIX") + "/api"
     if serviceName == "backend-go-gin":
         return "https://gin" + suffix
     if serviceName == "backend-typescript-express":
@@ -94,17 +97,71 @@ def service_endpoint(serviceName):
 
 
 def read_entity(store, key):
-    return {"value": None, "errors": store + " client not implemented yet"}
+    if store == "mysql":
+        return read_mysql(key)
+    if store == "mongodb":
+        return read_mongodb(key)
+    else:
+        return {"value": None, "errors": store + " not supported"}
 
 
 def write_entity(store, key, value):
-    return {"value": value, "errors": store + " client not implemented yet"}
+    if store == "mysql":
+        return write_mysql(key, value)
+    if store == "mongodb":
+        return write_mongodb(key, value)
+    else:
+        return {"value": None, "errors": store + " not supported"}
 
 
-def log_context(request, response, errors, received_at):
-    print("Started POST \"/api\" at " + str(received_at), flush=True)
-    print("  Request: " + request, flush=True)
-    print("  Response: " + response, flush=True)
-    if len(errors) > 0:
-        print("  Errors: " + ", ".join(errors), flush=True)
-    print("\n", flush=True)
+def read_mysql(key):
+    conn = db.mysql_client()
+
+    stmt = "select content from sample where uuid='" + key + "'"
+
+    cursor = conn.cursor()
+    cursor.execute(stmt)
+
+    if cursor.rowcount == 0:
+        value = "Not Found"
+    else:
+        value = cursor.fetchone()[0]
+
+    conn.close()
+
+    return {"value": value, "errors": None}
+
+
+def write_mysql(key, value):
+    conn = db.mysql_client()
+
+    stmt = "insert into sample (uuid, content) values (%s, %s)"
+
+    cursor = conn.cursor()
+    cursor.execute(stmt, (key, value))
+
+    conn.commit()
+    conn.close()
+
+    return {"value": value, "errors": None}
+
+
+def read_mongodb(key):
+    conn = db.mongo_client()
+
+    result = conn.sample.find_one({"uuid": key})
+
+    if result is None:
+        value = "Not Found"
+    else:
+        value = result["content"]
+
+    return {"value": value, "errors": None}
+
+
+def write_mongodb(key, value):
+    conn = db.mongo_client()
+
+    conn.sample.insert_one({"uuid": key, "content": value})
+
+    return {"value": value, "errors": None}

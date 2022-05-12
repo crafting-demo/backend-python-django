@@ -11,6 +11,9 @@ sudo apt-get install python3-dev build-essential -y
 sudo apt-get install libmysqlclient-dev default-libmysqlclient-dev -y
 pip3 install mysqlclient
 
+echo '== Install mongodb client =='
+python3 -m pip install pymongo
+
 echo '== Install django-cors-headers =='
 pip3 install django-cors-headers
 
