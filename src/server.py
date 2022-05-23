@@ -3,11 +3,12 @@ import requests
 
 from os import environ
 from datetime import datetime
+from django.db import connection
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.serializers.json import DjangoJSONEncoder
 
-from . import db
+from . import mongo
 from . import logger
 
 
@@ -115,26 +116,21 @@ def write_entity(store, key, value):
 
 
 def read_mysql(key):
-    conn = db.mysql_client()
-    stmt = "select content from sample where uuid='" + key + "'"
-    cursor = conn.cursor()
-    cursor.execute(stmt)
-    if cursor.rowcount == 0:
-        value = "Not Found"
-    else:
-        value = cursor.fetchone()[0]
-    conn.close()
-    return {"value": value, "errors": None}
+    with connection.cursor() as cursor:
+        stmt = "select content from sample where uuid='" + key + "'"
+        cursor.execute(stmt)
+        if cursor.rowcount == 0:
+            value = "Not Found"
+        else:
+            value = cursor.fetchone()[0]
+        return {"value": value, "errors": None}
 
 
 def write_mysql(key, value):
-    conn = db.mysql_client()
-    stmt = "insert into sample (uuid, content) values (%s, %s)"
-    cursor = conn.cursor()
-    cursor.execute(stmt, (key, value))
-    conn.commit()
-    conn.close()
-    return {"value": value, "errors": None}
+    with connection.cursor() as cursor:
+        stmt = "insert into sample (uuid, content) values (%s, %s)"
+        cursor.execute(stmt, (key, value))
+        return {"value": value, "errors": None}
 
 
 def read_mongodb(key):
