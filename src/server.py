@@ -33,7 +33,7 @@ def nested_call_handler(request):
                     errors.append(res["errors"])
                     message["actions"][i]["status"] = "Failed"
                 else:
-                    message["actions"][i]["statPus"] = "Passed"
+                    message["actions"][i]["status"] = "Passed"
                     message["actions"][i]["payload"]["value"] = res["value"]
             elif action["action"] == "Write":
                 res = write_entity(
@@ -51,7 +51,7 @@ def nested_call_handler(request):
                     errors.append("failed to call service " + action["payload"]["serviceName"])
                     message["actions"][i]["status"] = "Failed"
                 else:
-                    message["actions"][i]["statPus"] = "Passed"
+                    message["actions"][i]["status"] = "Passed"
                     message["actions"][i]["payload"]["actions"] = resp["actions"]
 
             message["actions"][i]["serviceName"] = "backend-python-django"

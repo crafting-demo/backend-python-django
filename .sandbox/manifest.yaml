@@ -5,4 +5,4 @@ hooks:
 daemons:
   server:
     run:
-      cmd: python3 manage.py runserver 0.0.0.0:8080
+      cmd: cs wait service mysql && python3 manage.py runserver 0.0.0.0:8080
