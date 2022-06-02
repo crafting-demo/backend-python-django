@@ -5,3 +5,6 @@ def log_context(request, response, errors, received_at):
     print("  Response: " + response, flush=True)
     if len(errors) > 0:
         print("  Errors: " + ", ".join(errors), flush=True)
+
+def write(message):
+    print(message + "\n", flush=True)

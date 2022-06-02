@@ -15,6 +15,8 @@ from . import logger
 @csrf_exempt
 def nested_call_handler(request):
     if request.method == 'POST':
+        # logger.write("Test Test Crafting")
+
         received_at = datetime.utcnow()
         errors = []
 
@@ -82,19 +84,24 @@ def service_call(payload):
 
 
 def service_endpoint(serviceName):
-    suffix = environ.get("SANDBOX_ENDPOINT_DNS_SUFFIX") + "/api"
+    host = ""
+    port = ""
     if serviceName == "backend-go-gin":
-        return "https://gin" + suffix
+        host = environ.get("GIN_SERVICE_HOST")
+        port = environ.get("GIN_SERVICE_PORT_API")
     if serviceName == "backend-typescript-express":
-        return "https://express" + suffix
+        host = environ.get("EXPRESS_SERVICE_HOST")
+        port = environ.get("EXPRESS_SERVICE_PORT_API")
     if serviceName == "backend-ruby-rails":
-        return "https://rails" + suffix
+        host = environ.get("RAILS_SERVICE_HOST")
+        port = environ.get("RAILS_SERVICE_PORT_API")
     if serviceName == "backend-kotlin-spring":
-        return "https://spring" + suffix
+        host = environ.get("SPRING_SERVICE_HOST")
+        port = environ.get("SPRING_SERVICE_PORT_API")
     if serviceName == "backend-python-django":
-        return "https://django" + suffix
-    else:
-        return "unknown"
+        host = environ.get("DJANGO_SERVICE_HOST")
+        port = environ.get("DJANGO_SERVICE_PORT_API")
+    return "http://" + host + ":" + port + "/api"
 
 
 def read_entity(store, key):

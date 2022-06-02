@@ -29,7 +29,7 @@ DEBUG = False
 ALLOWED_HOSTS = ['*']
 CORS_ALLOW_ALL_ORIGINS = True
 
-CSRF_TRUSTED_ORIGINS = ['https://*' + environ.get("SANDBOX_ENDPOINT_DNS_SUFFIX")]
+CSRF_TRUSTED_ORIGINS = ['http*']
 
 # Application definition
 
