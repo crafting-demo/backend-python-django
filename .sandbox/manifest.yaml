@@ -3,6 +3,6 @@ hooks:
     cmd: scripts/setup-workspace.sh
 
 daemons:
-  server:
+  python-django:
     run:
       cmd: cs wait service mysql && python3 manage.py runserver 0.0.0.0:8080
