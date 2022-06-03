@@ -88,19 +88,19 @@ def service_endpoint(serviceName):
     port = ""
     if serviceName == "backend-go-gin":
         host = environ.get("GIN_SERVICE_HOST")
-        port = environ.get("GIN_SERVICE_PORT_API")
+        port = environ.get("GIN_SERVICE_PORT")
     if serviceName == "backend-typescript-express":
         host = environ.get("EXPRESS_SERVICE_HOST")
-        port = environ.get("EXPRESS_SERVICE_PORT_API")
+        port = environ.get("EXPRESS_SERVICE_PORT")
     if serviceName == "backend-ruby-rails":
         host = environ.get("RAILS_SERVICE_HOST")
-        port = environ.get("RAILS_SERVICE_PORT_API")
+        port = environ.get("RAILS_SERVICE_PORT")
     if serviceName == "backend-kotlin-spring":
         host = environ.get("SPRING_SERVICE_HOST")
-        port = environ.get("SPRING_SERVICE_PORT_API")
+        port = environ.get("SPRING_SERVICE_PORT")
     if serviceName == "backend-python-django":
         host = environ.get("DJANGO_SERVICE_HOST")
-        port = environ.get("DJANGO_SERVICE_PORT_API")
+        port = environ.get("DJANGO_SERVICE_PORT")
     return "http://" + host + ":" + port + "/api"
 
 
