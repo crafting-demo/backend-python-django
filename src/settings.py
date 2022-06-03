@@ -29,7 +29,7 @@ DEBUG = False
 ALLOWED_HOSTS = ['*']
 CORS_ALLOW_ALL_ORIGINS = True
 
-CSRF_TRUSTED_ORIGINS = ['http*']
+CSRF_TRUSTED_ORIGINS = ['http://*']
 
 # Application definition
 
