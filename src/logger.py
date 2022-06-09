@@ -7,4 +7,4 @@ def log_context(request, response, errors, received_at):
         print("  Errors: " + ", ".join(errors), flush=True)
 
 def write(message):
-    print(message + "\n", flush=True)
+    print(message, flush=True)
