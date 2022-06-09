@@ -49,7 +49,7 @@ def nested_call_handler(request):
                     message["actions"][i]["status"] = "Passed"
             elif action["action"] == "Call":
                 resp = service_call(action["payload"])
-                if resp is None or resp['status'] != 200:
+                if resp is None or 'error' in resp:
                     errors.append("failed to call service " + action["payload"]["serviceName"])
                     message["actions"][i]["status"] = "Failed"
                 else:
