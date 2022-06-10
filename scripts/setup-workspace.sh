@@ -17,6 +17,9 @@ python3 -m pip install pymongo
 echo '== Install django-cors-headers =='
 pip3 install django-cors-headers
 
+echo '== Wait for mysql service =='
+cs wait service mysql
+
 echo '== Apply unapplied migration(s) =='
 python3 manage.py migrate
 

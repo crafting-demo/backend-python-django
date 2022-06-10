@@ -1,8 +1,12 @@
 hooks:
+  post-checkout:
+    cmd:
   build:
     cmd: scripts/setup-workspace.sh
 
 daemons:
   python-django:
     run:
-      cmd: cs wait service mysql && python3 manage.py runserver 0.0.0.0:8080
+      cmd: |
+        cs wait service mysql
+        python3 manage.py runserver 0.0.0.0:$DJANGO_SERVICE_PORT
