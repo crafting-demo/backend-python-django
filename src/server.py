@@ -15,7 +15,7 @@ from . import logger
 @csrf_exempt
 def nested_call_handler(request):
     if request.method == 'POST':
-        # logger.write("Test Test Crafting")
+        # print("Test Test Crafting", flush=True)
 
         received_at = datetime.utcnow()
         errors = []

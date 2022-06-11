@@ -1,8 +1,18 @@
 hooks:
+  post-checkout:
+    cmd: |
+      pip3 install django
+      pip3 install mysqlclient
+      python3 -m pip install pymongo
+      pip3 install django-cors-headers
   build:
-    cmd: scripts/setup-workspace.sh
+    cmd: |
+      cs wait service mysql
+      python3 manage.py migrate
 
 daemons:
   python-django:
     run:
-      cmd: cs wait service mysql && python3 manage.py runserver 0.0.0.0:8080
+      cmd: |
+        cs wait service mysql
+        python3 manage.py runserver 0.0.0.0:$DJANGO_SERVICE_PORT
