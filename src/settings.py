@@ -84,8 +84,10 @@ DATABASES = {
         'NAME': 'demo',
         'USER': 'brucewayne',
         'PASSWORD': 'batman',
-        'HOST': environ.get('MYSQL_SERVICE_HOST'),
-        'PORT': environ.get('MYSQL_SERVICE_PORT')
+        'HOST': '127.0.0.1',
+        'PORT': '3306'
+        # 'HOST': environ.get('MYSQL_SERVICE_HOST'),
+        # 'PORT': environ.get('MYSQL_SERVICE_PORT')
     }
 }
 

@@ -3,12 +3,10 @@ hooks:
     cmd: |
       pip3 install django
       pip3 install mysqlclient
-      python3 -m pip install pymongo
       pip3 install django-cors-headers
   build:
     cmd: |
-      cs wait service mysql
-      python3 manage.py migrate
+      echo "Done"
 
 daemons:
   python-django:
