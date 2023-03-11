@@ -19,5 +19,5 @@ from . import server
 
 
 urlpatterns = [
-    path('api', server.nested_call_handler),
+    path('api', server.api_call_handler),
 ]
