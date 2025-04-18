@@ -2,7 +2,7 @@ hooks:
   post-checkout:
     cmd: |
       sudo apt-get update
-      sudp apt-get install -y default-libmysqlclient-dev
+      sudo apt-get install -y default-libmysqlclient-dev
       uv sync
 
 daemons:
